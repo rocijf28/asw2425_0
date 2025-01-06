@@ -2,14 +2,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser');
 const User = require('./user-model')
 
 const app = express();
 const port = 8001;
 
 // Middleware to parse JSON in request body
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Connect to MongoDB
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
