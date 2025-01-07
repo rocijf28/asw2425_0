@@ -38,6 +38,16 @@ services:
     environment:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
+  llmservice:
+    container_name: llmservice-${teamname:-defaultASW}
+    image: ghcr.io/pglez82/asw2425_0/llmservice:latest
+    profiles: ["dev", "prod"]
+    build: ./llmservice
+    ports:
+      - "8003:8003"
+    networks:
+      - mynetwork
+
   gatewayservice:
     container_name: gatewayservice-${teamname:-defaultASW}
     image: ghcr.io/pglez82/asw2425_0/gatewayservice:latest
@@ -47,6 +57,7 @@ services:
       - mongodb
       - userservice
       - authservice
+      - llmservice
     ports:
       - "8000:8000"
     networks:
@@ -54,16 +65,20 @@ services:
     environment:
       AUTH_SERVICE_URL: http://authservice:8002
       USER_SERVICE_URL: http://userservice:8001
+      LLM_SERVICE_URL: http://llmservice:8003
 
   webapp:
     container_name: webapp-${teamname:-defaultASW}
     image: ghcr.io/pglez82/asw2425_0/webapp:latest
     profiles: ["dev", "prod"]
-    build: ./webapp
+    build: 
+      context: ./webapp
+      args:
+        LLM_API_KEY: ${LLM_API_KEY}
     depends_on:
       - gatewayservice
     ports:
-      - "3000:3000" 
+      - "3000:3000"
 
   prometheus:
     image: prom/prometheus
