@@ -1,6 +1,6 @@
 services:
   mongodb:
-    container_name: mongodb-${teamname:-defaultASW}
+    container_name: mongodb-asw2425_0
     image: mongo
     profiles: ["dev", "prod"]
     volumes:
@@ -11,7 +11,7 @@ services:
       - mynetwork
 
   authservice:
-    container_name: authservice-${teamname:-defaultASW}
+    container_name: authservice-asw2425_0
     image: ghcr.io/pglez82/asw2425_0/authservice:latest
     profiles: ["dev", "prod"]
     build: ./users/authservice
@@ -25,7 +25,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
   userservice:
-    container_name: userservice-${teamname:-defaultASW}
+    container_name: userservice-asw2425_0
     image: ghcr.io/pglez82/asw2425_0/userservice:latest
     profiles: ["dev", "prod"]
     build: ./users/userservice
@@ -39,7 +39,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
   llmservice:
-    container_name: llmservice-${teamname:-defaultASW}
+    container_name: llmservice-asw2425_0
     image: ghcr.io/pglez82/asw2425_0/llmservice:latest
     profiles: ["dev", "prod"]
     build: ./llmservice
@@ -49,7 +49,7 @@ services:
       - mynetwork
 
   gatewayservice:
-    container_name: gatewayservice-${teamname:-defaultASW}
+    container_name: gatewayservice-asw2425_0
     image: ghcr.io/pglez82/asw2425_0/gatewayservice:latest
     profiles: ["dev", "prod"]
     build: ./gatewayservice
@@ -68,7 +68,7 @@ services:
       LLM_SERVICE_URL: http://llmservice:8003
 
   webapp:
-    container_name: webapp-${teamname:-defaultASW}
+    container_name: webapp-asw2425_0
     image: ghcr.io/pglez82/asw2425_0/webapp:latest
     profiles: ["dev", "prod"]
     build: 
@@ -82,7 +82,7 @@ services:
 
   prometheus:
     image: prom/prometheus
-    container_name: prometheus-${teamname:-defaultASW}
+    container_name: prometheus-asw2425_0
     profiles: ["dev"]
     networks:
       - mynetwork
@@ -96,7 +96,7 @@ services:
       
   grafana:
     image: grafana/grafana
-    container_name: grafana-${teamname:-defaultASW}
+    container_name: grafana-asw2425_0
     profiles: ["dev"]
     networks:
       - mynetwork
