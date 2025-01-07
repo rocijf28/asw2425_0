@@ -49,8 +49,8 @@ app.post('/adduser', async (req, res) => {
 app.post('/askllm', async (req, res) => {
   try {
     // Forward the add user request to the user service
-    const userResponse = await axios.post(llmServiceUrl+'/ask', req.body);
-    res.json(userResponse.data);
+    const llmResponse = await axios.post(llmServiceUrl+'/ask', req.body);
+    res.json(llmResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
   }

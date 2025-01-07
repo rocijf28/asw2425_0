@@ -15,6 +15,8 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { token: 'mockedToken' } });
     } else if (url.endsWith('/adduser')) {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
+    } else if (url.endsWith('/ask')) {
+      return Promise.resolve({ data: { answer: 'llmanswer' } });
     }
   });
 
@@ -36,5 +38,15 @@ describe('Gateway Service', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBe('mockedUserId');
+  });
+
+  // Test /askllm endpoint
+  it('should forward askllm request to the llm service', async () => {
+    const response = await request(app)
+      .post('/askllm')
+      .send({ question: 'question', apiKey: 'apiKey', model: 'gemini' });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.answer).toBe('llmanswer');
   });
 });
