@@ -21,11 +21,29 @@ Both the user and auth service share a Mongo database that is accessed with mong
 
 ## Quick start guide
 
-### Using docker
+First, clone the project:
 
-The fastest way for launching this sample project is using docker. Just clone the project:
 ```git clone git@github.com:pglez82/asw2425_0.git```
-and launch it with docker compose:
+
+### LLM API key configuration
+
+In order to communicate with the LLM integrated in this project, we need to setup an API key. Two integrations are available in this propotipe: gemini and empaphy. The API key provided must match the LLM provider used.
+
+We need to create two .env files. 
+- The first one in the webapp directory (for executing the webapp using ```npm start```). The content of this .env file should be as follows:
+```
+REACT_APP_LLM_API_KEY="YOUR-API-KEY"
+```
+- The second one located in the root of the project (along the docker-compose.yml). This .env file is used for the docker-compose when launching the app with docker. The content of this .env file should be as follows:
+```
+LLM_API_KEY="YOUR-API-KEY"
+```
+
+Note that these files must NOT be uploaded to the github repository (they are excluded in the .gitignore).
+
+
+### Launching Using docker
+For launching the propotipe using docker compose, just type:
 ```docker compose --profile dev up --build```
 
 ### Component by component start
@@ -47,11 +65,11 @@ For the deployment, we have several options. The first and more flexible is to d
 ### Machine requirements for deployment
 The machine for deployment can be created in services like Microsoft Azure or Amazon AWS. These are in general the settings that it must have:
 
-- Linux machine with Ubuntu > 20.04.
-- Docker and docker-compose installed.
+- Linux machine with Ubuntu > 20.04 (the recommended is 24.04).
+- Docker installed.
 - Open ports for the applications installed (in this case, ports 3000 for the webapp and 8000 for the gateway service).
 
-Once you have the virtual machine created, you can install **docker** and **docker-compose** using the following instructions:
+Once you have the virtual machine created, you can install **docker** using the following instructions:
 
 ```ssh
 sudo apt update
@@ -86,9 +104,8 @@ deploy:
         key: ${{ secrets.DEPLOY_KEY }}
         command: |
           wget https://raw.githubusercontent.com/pglez82/asw2425_0/master/docker-compose.yml -O docker-compose.yml
-          wget https://raw.githubusercontent.com/pglez82/asw2425_0/master/.env
-          docker compose down
-          docker compose --profile prod up -d
+          docker compose --profile prod down
+          docker compose --profile prod up -d --pull always
 ```
 
 This action uses three secrets that must be configured in the repository:

@@ -34,10 +34,10 @@ Unitary tests can be found in the same directory where the react components lie.
 Here is an example of the tests for App.js:
 
 ```javascript
-test('renders learn react link', () => {
+test('renders welcome message', () => {
   render(<App />);
-  const linkElement = screen.getByText(/Welcome to the 2024 edition of the Software Architecture course/i);
-  expect(linkElement).toBeInTheDocument();
+  const welcomeMessage = screen.getByText(/Welcome to the 2025 edition of the Software Architecture course/i);
+  expect(welcomeMessage).toBeInTheDocument();
 });
 ```
 This example is pretty simple as it is only checking that the app is rendering correctly. Other tests are more complex as they depend on other components. As we are performing unitary testing, we need to decouple these dependencies, mocking the components that we do not want to test. For instance:
@@ -88,17 +88,18 @@ unit-tests:
         node-version: 18
     - run: npm --prefix users/authservice ci
     - run: npm --prefix users/userservice ci
+    - run: npm --prefix llmservice ci
     - run: npm --prefix gatewayservice ci
     - run: npm --prefix webapp ci
     - run: npm --prefix users/authservice test -- --coverage
     - run: npm --prefix users/userservice test -- --coverage
+    - run: npm --prefix llmservice test -- --coverage
     - run: npm --prefix gatewayservice test -- --coverage
     - run: npm --prefix webapp test -- --coverage
-    - name: Analyze with SonarCloud
-      uses: sonarsource/sonarcloud-github-action@master
+    - name: Analyze with SonarQube
+      uses: SonarSource/sonarqube-scan-action@master
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 ```
 
 
