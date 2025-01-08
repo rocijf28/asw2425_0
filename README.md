@@ -41,6 +41,8 @@ LLM_API_KEY="YOUR-API-KEY"
 
 Note that these files must NOT be uploaded to the github repository (they are excluded in the .gitignore).
 
+An extra configuration for the LLM to work in the deployed version of the app is to include it as a repository secret (LLM_API_KEY). This secret will be used by GitHub Action when building and deploying the application.
+
 
 ### Launching Using docker
 For launching the propotipe using docker compose, just type:
