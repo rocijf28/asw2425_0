@@ -29,7 +29,8 @@ app.post('/login', async (req, res) => {
     // Check if required fields are present in the request body
     validateRequiredFields(req, ['username', 'password']);
 
-    const { username, password } = req.body;
+    const username = req.sanitize(req.body.username);
+    const password = req.sanitize(req.body.password);
 
     // Find the user by username in the database
     const user = await User.findOne({ username });
