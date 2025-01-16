@@ -1,6 +1,9 @@
 name: CI for ASW2425
 
 on:
+  push:
+    branches:
+      - master
   release:
     types: [published]
 
