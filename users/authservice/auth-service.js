@@ -37,8 +37,8 @@ app.post('/login',  [
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array().toString()});
   }
-    let username =req.body.username;
-    let password =req.body.password;
+    let username =req.body.username.toString();
+    let password =req.body.password.toString();
     // Find the user by username in the database
     const user = await User.findOne({ username });
     
