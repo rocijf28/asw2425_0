@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./auth-model')
-
+const { check, matchedData, validationResult } = require('express-validator');
 const app = express();
 const port = 8002; 
 
@@ -24,13 +24,20 @@ function validateRequiredFields(req, requiredFields) {
 }
 
 // Route for user login
-app.post('/login', async (req, res) => {
+app.post('/login',  [
+  check('username').isLength({ min: 3 }).trim().escape(),
+  check('password').isLength({ min: 3 }).trim().escape()
+],async (req, res) => {
   try {
     // Check if required fields are present in the request body
-    validateRequiredFields(req, ['username', 'password']);
-
-    const username = req.sanitize(req.body.username);
-    const password = req.sanitize(req.body.password);
+  
+  validateRequiredFields(req, ['username', 'password']);
+  
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ error: errors.array().toString()});
+  }
+    let username =req.body.username;
 
     // Find the user by username in the database
     const user = await User.findOne({ username });
