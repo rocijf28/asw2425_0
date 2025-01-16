@@ -38,9 +38,10 @@ app.post('/login',  [
     return res.status(400).json({ error: errors.array().toString()});
   }
     let username =req.body.username;
-
+    let password =req.body.password;
     // Find the user by username in the database
     const user = await User.findOne({ username });
+    
 
     // Check if the user exists and verify the password
     if (user && await bcrypt.compare(password, user.password)) {
